@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Lab Dashboard - YCCC</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-vr-cardboard"></i>
+                <span>VR Lab Dashboard</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#students" class="nav-link" data-section="students">
+                    <i class="fas fa-users"></i> Students
+                </a>
+                <a href="#equipment" class="nav-link" data-section="equipment">
+                    <i class="fas fa-desktop"></i> Equipment
+                </a>
+                <a href="#schedule" class="nav-link" data-section="schedule">
+                    <i class="fas fa-calendar"></i> Schedule
+                </a>
+                <a href="#applications" class="nav-link" data-section="applications">
+                    <i class="fas fa-file-alt"></i> Applications
+                </a>
+                <a href="#vr-viewer" class="nav-link" data-section="vr-viewer">
+                    <i class="fas fa-eye"></i> VR Viewer
+                </a>
+            </div>
+            <div class="nav-user">
+                <span id="current-time"></span>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>John C. Barr</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h1>VR Lab Dashboard</h1>
+                <div class="lab-status" id="lab-status">
+                    <div class="status-indicator"></div>
+                    <span class="status-text">Lab Status: Open</span>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="active-sessions">3</h3>
+                        <p>Active Sessions</p>
+                        <small>2 Meta Quest 3</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="equipment-status">8/10</h3>
+                        <p>Equipment Available</p>
+                        <small>Ready for use</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="todays-workshops">2</h3>
+                        <p>Today's Workshops</p>
+                        <small>1 upcoming</small>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="lab-utilization">75%</h3>
+                        <p>Lab Utilization</p>
+                        <small>This week</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Equipment Status -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Equipment Status</h2>
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="equipment-list" id="equipment-list">
+                        <!-- Equipment items will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Today's Schedule -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2>Today's Schedule</h2>
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="schedule-list" id="schedule-list">
+                        <!-- Schedule items will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-card full-width">
+                    <div class="card-header">
+                        <h2>Quick Actions</h2>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="action-btn blue" onclick="startVRSession()">
+                            <i class="fas fa-vr-cardboard"></i>
+                            <span>Start VR Session</span>
+                        </button>
+                        <button class="action-btn green" onclick="scheduleWorkshop()">
+                            <i class="fas fa-plus"></i>
+                            <span>Schedule Workshop</span>
+                        </button>
+                        <button class="action-btn purple" onclick="runSystemCheck()">
+                            <i class="fas fa-diagnostics"></i>
+                            <span>System Check</span>
+                        </button>
+                        <button class="action-btn orange" onclick="viewReports()">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>View Reports</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Students Section -->
+        <section id="students" class="content-section">
+            <div class="section-header">
+                <h1>Student Management</h1>
+                <button class="btn-primary" onclick="addStudent()">
+                    <i class="fas fa-plus"></i> Add Student
+                </button>
+            </div>
+            
+            <div class="students-container">
+                <div class="students-filters">
+                    <input type="text" id="student-search" placeholder="Search students..." class="search-input">
+                    <select id="student-filter" class="filter-select">
+                        <option value="all">All Students</option>
+                        <option value="active">Active</option>
+                        <option value="vr-club">VR Club</option>
+                        <option value="class">Class Enrolled</option>
+                    </select>
+                </div>
+                
+                <div class="students-grid" id="students-grid">
+                    <!-- Students will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Equipment Section -->
+        <section id="equipment" class="content-section">
+            <div class="section-header">
+                <h1>Equipment Management</h1>
+                <button class="btn-primary" onclick="addEquipment()">
+                    <i class="fas fa-plus"></i> Add Equipment
+                </button>
+            </div>
+            
+            <div class="equipment-grid" id="equipment-grid">
+                <!-- Equipment cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule" class="content-section">
+            <div class="section-header">
+                <h1>Lab Schedule</h1>
+                <button class="btn-primary" onclick="addEvent()">
+                    <i class="fas fa-plus"></i> Add Event
+                </button>
+            </div>
+            
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button onclick="previousWeek()" class="btn-secondary">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h2 id="current-week"></h2>
+                    <button onclick="nextWeek()" class="btn-secondary">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="calendar-grid" id="calendar-grid">
+                    <!-- Calendar will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section id="applications" class="content-section">
+            <div class="section-header">
+                <h1>VR Club Applications</h1>
+                <div class="application-stats">
+                    <span class="stat-badge pending">
+                        <i class="fas fa-clock"></i>
+                        <span id="pending-apps">5 Pending</span>
+                    </span>
+                    <span class="stat-badge approved">
+                        <i class="fas fa-check"></i>
+                        <span id="approved-apps">12 Approved</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="applications-container">
+                <div class="applications-filters">
+                    <select id="app-status-filter" class="filter-select">
+                        <option value="all">All Applications</option>
+                        <option value="pending">Pending Review</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <input type="date" id="app-date-filter" class="date-input">
+                </div>
+                
+                <div class="applications-list" id="applications-list">
+                    <!-- Applications will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- VR Viewer Section -->
+        <section id="vr-viewer" class="content-section">
+            <div class="section-header">
+                <h1>VR Content Viewer</h1>
+                <div class="viewer-controls">
+                    <button class="btn-secondary" onclick="uploadVRContent()">
+                        <i class="fas fa-upload"></i> Upload Content
+                    </button>
+                    <button class="btn-secondary" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i> Fullscreen
+                    </button>
+                </div>
+            </div>
+            
+            <div class="vr-viewer-container">
+                <div class="vr-canvas" id="vr-canvas">
+                    <div class="vr-placeholder">
+                        <i class="fas fa-vr-cardboard"></i>
+                        <p>Load VR content to begin viewing</p>
+                        <button class="btn-primary" onclick="loadSampleVR()">Load Sample Scene</button>
+                    </div>
+                </div>
+                
+                <div class="vr-controls">
+                    <div class="control-group">
+                        <label>Scene Selection:</label>
+                        <select id="scene-selector" onchange="switchScene()">
+                            <option value="">Select a scene...</option>
+                            <option value="classroom">Virtual Classroom</option>
+                            <option value="lab">Science Lab</option>
+                            <option value="space">Space Station</option>
+                            <option value="anatomy">Human Anatomy</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>View Mode:</label>
+                        <button class="control-btn" onclick="setViewMode('orbit')">Orbit</button>
+                        <button class="control-btn" onclick="setViewMode('walk')">Walk</button>
+                        <button class="control-btn" onclick="setViewMode('fly')">Fly</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
+    
+    <!-- Student Modal -->
+    <div id="student-modal" class="modal">
+        <div class="modal-header">
+            <h2 id="student-modal-title">Add Student</h2>
+            <button onclick="closeModal()" class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="student-form">
+                <div class="form-group">
+                    <label for="student-name">Full Name</label>
+                    <input type="text" id="student-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-email">Email</label>
+                    <input type="email" id="student-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-id">Student ID</label>
+                    <input type="text" id="student-id" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-program">Program</label>
+                    <select id="student-program" required>
+                        <option value="">Select Program</option>
+                        <option value="computer-science">Computer Science</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="digital-media">Digital Media</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="vr-club-member"> VR Club Member
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="closeModal()" class="btn-secondary">Cancel</button>
+            <button type="submit" form="student-form" class="btn-primary">Save Student</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/students.js"></script>
+    <script src="js/equipment.js"></script>
+    <script src="js/schedule.js"></script>
+    <script src="js/applications.js"></script>
+    <script src="js/vr-viewer.js"></script>
+</body>
+</html>
